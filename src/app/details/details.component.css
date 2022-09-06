@@ -1,0 +1,135 @@
+.form-container {
+    display: block;
+    max-width: 300px;
+    margin: auto;
+  
+    background: #eceff1;
+    padding: 48px;
+    border-radius: 16px;
+  
+    /* mat-form-field {
+      width: 100%;
+    } */
+  }
+  
+  .center {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .margin-top {
+    margin-top: 16px !important;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+
+  /* .profile-image {
+    position: relative;
+    width: 120px;
+    margin: auto;
+  } */
+  
+  .profile-image > img {
+    border-radius: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .profile-image > button {
+    position: relative;
+    bottom: -40px;
+    left: -30px;
+  }
+  
+  .form-container {
+    max-width: 400px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 16px;
+  }
+
+  .bg-custom{
+    background-color: rgb(155, 199, 220);
+}
+.title{
+    color: rgb(255, 0, 115);
+}
+/* .example-card {
+    max-width: 400px;
+  } */
+  
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+    max-height: 500px !important;
+  }
+
+mat-card{
+    width: 60%;
+    height: 70%;
+}
+/* mat-card img{
+    object-fit: cover;
+    
+} */
+.example-spacer {
+    flex: 20px;
+  }
+
+  .avatar {
+    vertical-align: middle;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+
+  h1 {text-align: center;}
+
+
+
+
+  .nav-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+
+  }
+  .menu-button:hover {
+    background-color:#002ead;
+    transition: 0.7s;
+}
+.nav-content{
+  text-align: center;
+  justify-content: space-between;
+}
+  .nav-details{
+    height: 330px;
+  }
+
+mat-sidenav {
+    margin: 16px;
+    width: 200px;
+    border-right: none;
+    background: #07937a;
+    color: white;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+}
+
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+}
+  

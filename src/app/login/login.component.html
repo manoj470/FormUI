@@ -1,0 +1,36 @@
+<div class="bg-image">
+    <img src="https://mdbootstrap.com/img/Photos/Others/architecture.webp"/>
+</div>
+<div fxLayoutAlign="center center" fxFlexFill>
+    <mat-card>
+        <h1 class="loginTitle">Generate OTP</h1>
+        <br>
+        <div class="div-text">
+            <span>We will send you an <b>One Time Password</b><br>
+                 on this email-id</span>
+        </div>
+        <br>
+        
+        <form [formGroup]="loginForm">
+            <mat-form-field appearance="standard">
+                <mat-label>Email-id</mat-label>
+                <input [style]="'width: 80%;'" formControlName="email" matInput 
+                placeholder="Type your Email-id">
+                <mat-icon matPrefix>person_outline</mat-icon>
+                <mat-error *ngIf="forError('email','required')">This field is required</mat-error>
+                <mat-error *ngIf="forError('email','email')">Please Enter Valid Email-id</mat-error>
+            </mat-form-field>
+        </form>
+        <div [align]="'center'" [style]="'margin-top: 90px;'" >
+            <button mat-raised-button nbButton status="success" [style]="'width: 80%;'" color="primary" (click)="getOtp()">GET OTP
+                
+                <!-- <mat-icon><mat-spinner mode="indeterminate" color="accent" diameter="20"></mat-spinner></mat-icon> -->
+            </button>
+            
+        </div>
+    </mat-card>
+</div>
+<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-circus" [fullScreen] = "true"></ngx-spinner> -->
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: rgb(101, 253, 13)" > Loading... </p></ngx-spinner>
+

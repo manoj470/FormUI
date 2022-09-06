@@ -1,0 +1,27 @@
+<div class="bg-image">
+    <img src="https://mdbootstrap.com/img/Photos/Others/architecture.webp"/>
+</div>
+<div fxLayoutAlign="center center" fxFlexFill>
+    <mat-card>
+        <h1 class="loginTitle">OTP Verification</h1>
+        <br>
+        <div class="div-text">
+            <span>Enter the <b>verfication code</b><br>
+                    we just send you on your email address</span>
+        </div>
+        <br>
+        <br>
+        <!-- <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input> -->
+        
+        <ng-otp-input  [formCtrl]="otp"  [config]="config"></ng-otp-input>
+        <div [align]="'center'" [style]="'margin-top: 90px;'" >
+            <button mat-raised-button [style]="'width: 80%;'" color="primary" (click)="verify()">Verify
+                <!-- <mat-icon><mat-spinner mode="indeterminate" color="accent" diameter="20"></mat-spinner></mat-icon> -->
+            </button>
+        </div>
+        
+        
+    </mat-card>
+</div>
+
+

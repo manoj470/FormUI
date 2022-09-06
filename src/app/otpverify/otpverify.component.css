@@ -1,0 +1,29 @@
+mat-card{
+    width: 30%;
+    height: 70%;
+}
+mat-form-field{
+    width: 100%;
+}
+.loginTitle{
+    text-align: center;
+    text-shadow: red;
+    font-weight: bold;
+    font-size: 30px;
+    text-shadow: 1px 2px green; 
+}
+.div-text{
+    text-align: center;
+}
+img{
+    height: 100%;
+    width: 100%;
+}
+
+.bg-image{
+    z-index: -1;
+    position: absolute;
+    height: 99%;
+    width: 100%;
+    background-position: center;
+}

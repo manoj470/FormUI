@@ -1,0 +1,65 @@
+<div *ngIf="isSuccess">
+    <h1 mat-dialog-title [align]="'center'" class="title">Employee Details</h1>
+    <div fxLayoutAlign="center center" >
+        <mat-card class="d-flex justify-content-between "[style]="{'background': '#c0c0c0'}">
+            <div class="profile-image">
+                <img class="margin-top mat-elevation-z1" 
+                width="120" height="120" [src]="url ?? 'assets/download.png'"/>
+                <button mat-mini-fab (click)="fileInput.click()">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                <input hidden type='file' #fileInput (change)="readURL($event);" />
+            </div>
+            <div>
+                <br>
+                <h1>{{viewData.employeeName}}</h1>
+                <p>{{viewData.email}}</p>
+                <p>{{viewData.id}}</p>
+            </div>
+            <div></div>
+            <div></div>
+        </mat-card>
+    </div>
+    <br>
+    <div fxLayoutAlign="center center" >
+        <mat-card class="nav-details">
+          <mat-sidenav-container class="nav-container">
+            <mat-sidenav mode="side" opened class="mat-elevation-z8">
+              <mat-nav-list *ngFor="let anc of anchorList">
+                <button  mat-button class="menu-button" [ngStyle]="{'background':toggle==anc?'red':'none'}"
+                 (click)="details(anc)">{{anc}}</button>
+              </mat-nav-list>
+            </mat-sidenav>
+        
+            <mat-sidenav-content class="nav-content">
+              <div class="emp-data" *ngIf="toggle==anchorList[0]">
+                <h2>Emp Data</h2>
+                <span>Name: {{viewData.employeeName}}</span><br>
+                <span>Date of Birth: {{viewData.dateOfBirth}}</span><br>
+                <span>Gender: {{viewData.gender}}</span><br>
+                <span>Hobby: {{viewData.hobbies}}</span><br>
+                <span>Email: {{viewData.email}}</span><br>
+                <span>Address1: {{viewData.addressLine1}}</span><br>
+                <span>Address2: {{viewData.addressLine2}}</span><br>
+                <span>City: {{viewData.city}}</span><br>
+                <span>Zip Code: {{viewData.zipCode}}</span><br>
+                <span>Country: {{viewData.country}}</span><br>
+                <span>Pan Number: {{viewData.panNumber}}</span><br><br>
+              </div>
+              <div class="emp-data" *ngIf="toggle==anchorList[1]">
+                <h2>Family details</h2>
+                <div *ngFor="let member of viewData.familyDetailsList;let i=index">
+                    <span><b>Member:{{i+1}} </b></span><br>
+                    <span>Name: {{member.name}}</span><br>
+                    <span>Date of Birth: {{member.dateOfBirth}}</span><br>
+                    <span>Gender: {{member.gender}}</span><br>
+                    <span>Relationship: {{member.relation}}</span><br>
+                    <span>ContactNumber: {{member.contactNumber}}</span><br>
+                </div>
+              </div>
+            </mat-sidenav-content>
+            
+          </mat-sidenav-container>             
+        </mat-card>
+    </div>
+</div>

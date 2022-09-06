@@ -1,0 +1,207 @@
+<h2 mat-dialog-title [align]="'center'">Employee Form</h2>
+<h3 mat-dialog-title >{{formTitle}}</h3>
+<div mat-dialog-content *ngIf="steps==1" >
+    <form [formGroup]="employeeDetails">
+        <mat-form-field appearance="outline">
+            <mat-label>Employee Name</mat-label>
+            <input formControlName="employeeName" matInput placeholder="Name">
+            <mat-hint [align]="'end'">Not more then 20 characters long.</mat-hint>
+            <mat-error *ngIf="forError('employeeName','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('employeeName','maxlength')">Limit exceed</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Date of birth</mat-label>
+            <input matInput readonly formControlName="dateOfBirth" 
+             [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+            <mat-error *ngIf="forError('dateOfBirth','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('dateOfBirth','invalidDOBYear')">
+                Select year lesser than 2000.
+             </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Email Id</mat-label>
+            <input formControlName="email" matInput placeholder="email">
+            <mat-error *ngIf="forError('email','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('email','email')">Please Enter Valid Email-id</mat-error>
+        </mat-form-field>
+        <mat-radio-group formControlName="gender" aria-label="Select an option">
+            <mat-label>Gender</mat-label>
+            <mat-radio-button *ngFor="let gender of genderList" [value]="gender" >
+                {{gender}}
+            </mat-radio-button>
+        </mat-radio-group>
+        <br><br>
+        <mat-form-field appearance="outline">
+            <mat-label>Hobby</mat-label>
+            <mat-select formControlName="hobbies" multiple>
+              <mat-option *ngFor="let hobby of hobbyList" [value]="hobby">{{hobby}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="forError('hobbies','required')">Please select atleast one option</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Address Line 1</mat-label>
+            <input formControlName="addressLine1" matInput placeholder="address">
+            <mat-hint [align]="'end'">Not more then 50 characters long.</mat-hint>
+            <mat-error *ngIf="forError('addressLine1','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('addressLine1', 'maxlength')">Limit exceed</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Address Line 2</mat-label>
+            <input formControlName="addressLine2" matInput placeholder="address">
+            <mat-hint [align]="'end'">Not more then 50 characters long.</mat-hint>
+            <mat-error *ngIf="forError('addressLine2','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('addressLine2', 'maxlength')">Limit exceed</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Zip Code</mat-label>
+            <input matInput type="Number" formControlName="zipCode" placeholder="zipcode">
+            <mat-hint [align]="'end'">Enter 6 digit code.</mat-hint>
+            <mat-error *ngIf="forError('zipCode','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('zipCode', 'pattern')">Zipcode length is 6</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+                <mat-select formControlName="city" placeholder="city">
+                    <mat-option *ngFor="let city of cityList" [value]="city">
+                        {{city}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="forError('city','required')">This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+                <mat-select formControlName="country" placeholder="country">
+                    <mat-option *ngFor="let country of countryList" [value]="country">
+                        {{country}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="forError('country','required')">This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Pan Number</mat-label>
+            <input formControlName="panNumber" matInput placeholder="panNumber">
+            <mat-error *ngIf="forError('panNumber', 'pattern')">Please Enter Valid Pan Number</mat-error>
+            <mat-error *ngIf="forError('panNumber','required')">This field is required</mat-error>
+        </mat-form-field>
+        <div fxLayoutAlign="center center" fxFlexFill>
+            <button type="button" color="primary" mat-raised-button (click)="fileInput.click()">Choose Image</button>
+            <span style="margin-left: 2.5em;"></span>
+            <input hidden type='file' #fileInput (change)="readURL($event); " />
+            <img id="avatar" [src]="imageSrc ?? 'assets/download.png'" alt="your image" /><br/>
+        </div>
+        <!-- <input type="file" formControlName="avatar"/> -->
+    </form>
+</div>
+<div mat-dialog-content *ngIf="steps==2">
+    <button mat-raised-button color="primary" (click)="addMember()">Add Family Members</button>
+    <br>
+    <br>
+    <form [formGroup]="familyDetails">
+        <div formArrayName="members" >
+            <div *ngFor="let member of members.controls; let i=index">
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Member Name: {{member.get('name')?.value}}
+                        <!-- {{members.controls.at(i)/.name}} -->
+                      </mat-panel-title>
+                      <mat-panel-description >
+                        <button mat-icon-button (click)="removeMember(i)">
+                            <mat-icon color="warn">remove_circle</mat-icon>
+                        </button>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div [formGroupName]="i">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input formControlName="name" matInput placeholder="Name">
+                            <mat-hint [align]="'end'">Not more then 20 characters long.</mat-hint>
+                            <!-- <mat-error *ngIf="forError1('members','required')">This field is required</mat-error>
+                            <mat-error *ngIf="forError1('members','maxlength')">Limit exceed</mat-error> -->
+                        </mat-form-field>
+                        <br>
+                        <mat-radio-group formControlName="gender" aria-label="Select an option">
+                            <mat-label>Gender</mat-label>
+                            <mat-radio-button *ngFor="let gender of genderList" [value]="gender" >
+                                {{gender}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <br>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Relationship</mat-label>
+                                <mat-select formControlName="relation">
+                                    <mat-option *ngFor="let relation of relationshipList" [value]="relation">
+                                        {{relation}}
+                                    </mat-option>
+                                </mat-select>
+                                <!-- <mat-error *ngIf="forError1('familyRelationship','required')">This field is required</mat-error> -->
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of birth</mat-label>
+                            <input matInput readonly formControlName="dateOfBirth" 
+                             [matDatepicker]="picker1">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <!-- <mat-error *ngIf="forError1('familyDateOfBirth','required')">This field is required</mat-error>
+                            <mat-error *ngIf="forError1('familyDateOfBirth','invalidDOBYear')">
+                                Select year lesser than 2000.
+                             </mat-error> -->
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mobile Number</mat-label>
+                            <input matInput type="Number" formControlName="contactNumber" placeholder="Contact Number">
+                            <!-- <mat-error *ngIf="forError1('familyMobileNumber','required')">This field is required</mat-error>
+                            <mat-error *ngIf="forError1('familyMobileNumber', 'pattern')">Mobile Number is invalid</mat-error> -->
+                        </mat-form-field>
+                        <!-- <button (click)="removeMember(i)">Remove</button> -->
+                    </div>
+                </mat-expansion-panel>
+                <br>
+            </div>
+        </div> 
+    </form>
+</div>
+<div mat-dialog-content *ngIf="steps==3">
+    <label class="image-upload-container btn btn-bwm">
+        <span>Select Image</span>
+        <input #imageInput
+               type="file"
+               accept="image/*"
+               (change)="upload(imageInput)">
+      </label>
+      <input class="ng-hide" id="input-file-id" multiple type="file" />
+    <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label>
+    <br>
+    <br>
+    
+    <!-- <form [formGroup]="uploadData">
+        <mat-form-field appearance="outline">
+            <ngx-mat-file-input formControlName="">
+            </ngx-mat-file-input>
+            <mat-hint>Hint</mat-hint>
+          </mat-form-field>
+    </form> -->
+</div>
+
+<div mat-dialog-actions>
+    <button style="margin-left:8px;" mat-raised-button color="primary" 
+    (click)="stepCount('form1')" *ngIf="steps!=1">Prev</button>
+    <span class="button-spacer"></span>
+    <button mat-raised-button mat-dialog-close color="warn">Close</button>
+    <button style="margin-left:8px" mat-raised-button color="primary" 
+    (click)="onSave('form3')" *ngIf="steps==2">{{actionBtn}}</button>
+    <button style="margin-left:8px" mat-raised-button color="primary" 
+    (click)="submit()" *ngIf="steps==3">{{actionBtn}}</button>
+    <button style="margin-left:8px" mat-raised-button color="primary" 
+    (click)="stepCount('form2')" *ngIf="steps==1">{{actionBtn}}</button>
+</div>
+
+
+
+
+
