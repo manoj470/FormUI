@@ -29,6 +29,7 @@ export class DialogComponent implements OnInit {
   startDate = new Date(2000, 0, 1);
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  
 
   constructor(private formBuilder:FormBuilder,private api:ApiService,
     @Inject(MAT_DIALOG_DATA) public editData:any,
@@ -41,6 +42,7 @@ export class DialogComponent implements OnInit {
       employeeName:['',[Validators.required,Validators.maxLength(20)]],
       dateOfBirth:['',[Validators.required,this.datePickerValidator()]],
       email:['',[Validators.required,Validators.email]],
+      password:['',[Validators.required,Validators.maxLength(10),Validators.minLength(6)]],
       gender:['',Validators.required],
       hobbies:['',Validators.required],
       addressLine1:['',[Validators.required,Validators.maxLength(50)]],
@@ -48,7 +50,8 @@ export class DialogComponent implements OnInit {
       zipCode:['',[Validators.required,Validators.pattern('[0-9]{6}')]],
       city:['',Validators.required],
       country:['',Validators.required],
-      panNumber:['',[Validators.required,Validators.pattern("[A-Z]{5} || [a-z]{5}[0-9]{4}[A-Z]{1} || [a-z]{1}")]],
+      panNumber:['',[Validators.required,
+        Validators.pattern("[A-Z]{5} || [a-z]{5}[0-9]{4}[A-Z]{1} || [a-z]{1}")]],
       familyDetailsList:[Array<string>],
       avatar:[''],
     });
@@ -65,6 +68,7 @@ export class DialogComponent implements OnInit {
       this.employeeDetails.controls['employeeName'].setValue(this.editData.employeeName);
       this.employeeDetails.controls['dateOfBirth'].setValue(this.editData.dateOfBirth);
       this.employeeDetails.controls['email'].setValue(this.editData.email);
+      this.employeeDetails.controls['password'].setValue(this.editData.password);
       this.employeeDetails.controls['gender'].setValue(this.editData.gender);
       this.employeeDetails.controls['hobbies'].setValue(this.editData.hobbies.split(","));
       this.employeeDetails.controls['addressLine1'].setValue(this.editData.addressLine1);

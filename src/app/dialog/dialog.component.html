@@ -26,6 +26,18 @@
             <mat-error *ngIf="forError('email','required')">This field is required</mat-error>
             <mat-error *ngIf="forError('email','email')">Please Enter Valid Email-id</mat-error>
         </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input [type]="'text'" matInput placeholder="Password" 
+            formControlName="password" required >
+            <!-- <input matInput placeholder="Password" 
+            [type]="hide ? 'password' : 'text'" formControlName="password" required>
+            <mat-icon matSuffix 
+            (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
+            <mat-error *ngIf="forError('password','required')">This field is required</mat-error>
+            <mat-error *ngIf="forError('password','minlength')">Minimum 6 characters are required</mat-error>
+            <mat-error *ngIf="forError('password','maxlength')">Maximum 10 characters are allowed</mat-error>
+        </mat-form-field>
         <mat-radio-group formControlName="gender" aria-label="Select an option">
             <mat-label>Gender</mat-label>
             <mat-radio-button *ngFor="let gender of genderList" [value]="gender" >

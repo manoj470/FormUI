@@ -42,4 +42,22 @@ export class ApiService {
   postAvatar(id:number,data:any){
     return this.http.post<any>("http://localhost:8080/emp/upload/"+id+"/avatar/",data);
   }
+
+  postLogin(data:any){
+    return this.http.post<any>("http://localhost:8080/emp/login/",data);
+  }
+
+  postPdf(data:any){
+    return this.http.post<any>("http://localhost:8080/emp/upload/pdf",data);
+  }
+
+  getFileById(id:number){
+    return this.http.get<any>("http://localhost:8080/emp/upload/"+id);
+  }
+
+  downloadFile(id:number){
+    return this.http.get("http://localhost:8080/emp/doc/download/"+id,{
+      responseType: 'blob'
+    });
+  }
 }

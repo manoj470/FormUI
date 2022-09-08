@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthGuardServiceService } from '../services/auth-guard-service.service';
 
 
 @Component({
@@ -11,36 +12,58 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  hide:boolean=true;
   loginForm!:FormGroup;
+  emailId!:string;
   constructor(private formBuilder:FormBuilder,private api:ApiService,
-    private router:Router,private spinner: NgxSpinnerService) { }
+    private router:Router,private spinner: NgxSpinnerService,
+    private authGuard:AuthGuardServiceService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email:['',[Validators.required,Validators.email]]
+      email:['',Validators.required],
+      password:['',Validators.required],
     });
   }
 
-
-
   public forError = (controlName: string, errorName: string) =>{
     return this.loginForm.controls[controlName].hasError(errorName);
-    }
+  }
   
-  getOtp(){
+  login(){
     this.spinner.show();
     if(this.loginForm.valid){
-      this.api.postEmail(this.loginForm.value)
-      .subscribe({
+      console.log(this.loginForm.value);
+      this.api.postLogin(this.loginForm.value).subscribe({
         next:(res)=>{
-          console.log("clicked successfully!");
-          this.router.navigate([`otpverify`],{ queryParams: { email: this.loginForm.value.email }});
+          alert(res.msg);
+          this.spinner.hide();
+          console.log(this.loginForm.value.email);
+          this.emailId=this.loginForm.value.email;
+          this.authGuard.isLogin=true;
+          this.router.navigate([`user`],{queryParams:{id:res.id}});
         },
-        error:()=>{
-          alert("Error while sending OTP for this email id");
-        }  
-      });
+        error:(err)=>{
+          console.log("Error but hit....ok"+err);
+          console.log(err)
+          this.spinner.hide();
+        }
+      })
     }
+
+
+    // if(this.loginForm.valid){
+    //   this.api.postEmail(this.loginForm.value)
+    //   .subscribe({
+    //     next:(res)=>{
+    //       console.log("clicked successfully!");
+    //       this.router.navigate([`otpverify`],{ queryParams: { email: this.loginForm.value.email }});
+    //     },
+    //     error:()=>{
+    //       alert("Error while sending OTP for this email id");
+    //     }  
+    //   });
+    // }
   }
 
 }

@@ -34,6 +34,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { AngularFileUploaderModule } from "angular-file-uploader";
+import { UserComponent } from './user/user.component';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     FormComponent,
     OtpverifyComponent,
     DetailsComponent,
+    UserComponent,
+    UploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +73,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     NgOtpInputModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
-    NgxSpinnerModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
     MatSidenavModule,
     MatListModule,
     MatSnackBarModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit,ViewChild,AfterViewInit, Inject, ElementRef } from '@angular/core';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 // import {MatPaginator} from '@angular/material/paginator';
 // import {MatSort} from '@angular/material/sort';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { DetailsComponent } from '../details/details.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { ApiService } from '../services/api.service';
+import * as XLSX from 'xlsx';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-form',
@@ -14,17 +16,13 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-
-  // displayedColumns: string[] = ['id', 'employeeName', 'dateOfBirth', 'email','gender','hobbies',
-  //                               'addressLine1','addressLine2',
-  //                               'zipCode','city','country','panNumber','action'];
   displayedColumns: string[] = ['employeeName', 'dateOfBirth', 'email','gender','hobbies',
                                 'address','panNumber','action'];
   dataSource!: MatTableDataSource<any>;
   // view:boolean=false;
   viewData!:any;
   // @ViewChild(MatPaginator) paginator!: MatPaginator;
-  // @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private dialog: MatDialog,private api:ApiService,
     private router:Router){
@@ -50,7 +48,7 @@ export class FormComponent implements OnInit {
         this.dataSource=new MatTableDataSource(res);
         console.log("Data")
         console.log(res);
-        // this.dataSource.sort=this.sort;
+        this.dataSource.sort=this.sort;
         // this.dataSource.paginator=this.paginator;
       },
       error:(err)=>{
@@ -80,6 +78,15 @@ export class FormComponent implements OnInit {
       }
     })
   }
+  @ViewChild('TABLE') table!: ElementRef;
+  exportAsExcel(){
+    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
+    ws['!cols'] = [];
+    ws['!cols'][7] = { hidden: true };
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Employee.xlsx');
+  }
 
   otherData(id:number){
     this.router.navigate([`details`],{queryParams:{id:id}});
@@ -106,13 +113,14 @@ export class FormComponent implements OnInit {
     // });
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
+  }
 
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-
+  
 }
