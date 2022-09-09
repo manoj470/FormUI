@@ -9,6 +9,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { ApiService } from '../services/api.service';
 import * as XLSX from 'xlsx';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-form',
@@ -21,7 +22,7 @@ export class FormComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   // view:boolean=false;
   viewData!:any;
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private dialog: MatDialog,private api:ApiService,
@@ -49,7 +50,7 @@ export class FormComponent implements OnInit {
         console.log("Data")
         console.log(res);
         this.dataSource.sort=this.sort;
-        // this.dataSource.paginator=this.paginator;
+        this.dataSource.paginator=this.paginator;
       },
       error:(err)=>{
         alert("Error while getting all data!! "+err);
@@ -82,7 +83,9 @@ export class FormComponent implements OnInit {
   exportAsExcel(){
     const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
     ws['!cols'] = [];
-    ws['!cols'][7] = { hidden: true };
+    ws['!cols'][7] = {hidden:true};
+    // delete ws['6'];
+    // delete ws[6];
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'Employee.xlsx');
@@ -117,9 +120,9 @@ export class FormComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.dataSource
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   

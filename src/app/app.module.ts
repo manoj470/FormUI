@@ -36,6 +36,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { UserComponent } from './user/user.component';
 import { UploadComponent } from './upload/upload.component';
+import { SizePipe } from './pipes/size.pipe';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { UploadComponent } from './upload/upload.component';
     DetailsComponent,
     UserComponent,
     UploadComponent,
+    SizePipe,
   ],
   imports: [
     BrowserModule,

@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
       email:['',Validators.required],
       password:['',Validators.required],
     });
+    console.log(this.authGuard.isLogin);
   }
 
   public forError = (controlName: string, errorName: string) =>{
@@ -39,9 +40,11 @@ export class LoginComponent implements OnInit {
           alert(res.msg);
           this.spinner.hide();
           console.log(this.loginForm.value.email);
-          this.emailId=this.loginForm.value.email;
-          this.authGuard.isLogin=true;
-          this.router.navigate([`user`],{queryParams:{id:res.id}});
+          if(res.msg=='Login Successfully!'){
+            this.emailId=this.loginForm.value.email;
+            this.authGuard.isLogin=true;
+            this.router.navigate([`user`],{queryParams:{id:res.id}});
+          }
         },
         error:(err)=>{
           console.log("Error but hit....ok"+err);

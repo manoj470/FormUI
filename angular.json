@@ -14,7 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "lodash"
+              "lodash","file-saver"
            ],
             "outputPath": "dist/emp-ui2",
             "index": "src/index.html",

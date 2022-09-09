@@ -47,7 +47,7 @@ export class ApiService {
     return this.http.post<any>("http://localhost:8080/emp/login/",data);
   }
 
-  postPdf(data:any){
+  postFile(data:any){
     return this.http.post<any>("http://localhost:8080/emp/upload/pdf",data);
   }
 
@@ -59,5 +59,9 @@ export class ApiService {
     return this.http.get("http://localhost:8080/emp/doc/download/"+id,{
       responseType: 'blob'
     });
+  }
+
+  deleteDocById(id:number){
+    return this.http.delete<any>("http://localhost:8080/emp/doc/delete/"+id);
   }
 }

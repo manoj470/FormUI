@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   id!:number;
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  displayedColumns:string[]=['name','size','action'];
+  displayedColumns:string[]=['name','size','type','action'];
   dataSource!: MatTableDataSource<any>;
   ngOnInit(): void {
     this.route.queryParams.subscribe({
@@ -38,24 +38,26 @@ export class UserComponent implements OnInit {
     
     if (event.target.files && event.target.files[0]) {
         this.file = event.target.files[0];
-        let details ={"name":event.target.files[0].name,
-        "size":event.target.files[0].size,"empId":this.id}
-        console.log(details);
-        const formData = new FormData();
-        formData.append("file",this.file);
-        formData.append("details",new Blob([JSON.stringify(details)],
-        {type:"application/json"}));
-        this.api.postPdf(formData).subscribe({
-          next:()=>{
-            this.responseMessage("successfully uploaded...");
-            this.getAllDoc();
-            // console.log("successfully uploaded...");
-          },
-          error:()=>{
-            this.responseMessage("failed uploaded...");
-            // console.log("failed uploaded...");
-          }
-        });
+        if(event.target.files[0].size<1048576){
+          let details ={"name":event.target.files[0].name,
+          "size":event.target.files[0].size,"empId":this.id}
+          console.log(details);
+          const formData = new FormData();
+          formData.append("file",this.file);
+          formData.append("details",new Blob([JSON.stringify(details)],
+          {type:"application/json"}));
+          this.api.postFile(formData).subscribe({
+            next:(res)=>{
+              this.responseMessage(res.msg);
+              this.getAllDoc();
+            },
+            error:()=>{
+              this.responseMessage("failed uploaded...");
+            }
+          });
+        }else{
+          this.responseMessage("File size is too large.. It should less than 1MB");
+        }
       }
   }
   responseMessage(head:string){
@@ -83,18 +85,25 @@ export class UserComponent implements OnInit {
     })
   }
 
-  download(id:number){
+  download(id:number,name:string,type:string){
     this.api.downloadFile(id).subscribe({
       next:(res)=>{
         console.log("Data for download/......")
-        console.log(res);
-        let reader = new FileReader();
-        saveAs(res, 'save.jpg');
+        saveAs(res, name+'.'+type);
       }
     })
     console.log("clicked... download");
   }
   deleteFile(id:number){
     console.log("clicked delete");
+    this.api.deleteDocById(id).subscribe({
+      next:(res)=>{
+        this.responseMessage(res.msg);
+        this.getAllDoc();
+      },
+      error:(err)=>{
+        this.responseMessage("Error in deleting..");
+      }
+    })
   }
 }
