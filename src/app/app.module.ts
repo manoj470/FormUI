@@ -37,6 +37,9 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
 import { UserComponent } from './user/user.component';
 import { UploadComponent } from './upload/upload.component';
 import { SizePipe } from './pipes/size.pipe';
+import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -80,6 +83,9 @@ import { SizePipe } from './pipes/size.pipe';
     MatListModule,
     MatSnackBarModule,
     AngularFileUploaderModule,
+    NgbPaginationModule,
+    NgxPaginationModule,
+    MatTooltipModule,
     // MatProgressSpinnerModule,
     // NgxLoadingButtonsModule,
   ],

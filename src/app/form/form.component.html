@@ -98,12 +98,74 @@
         <tr mat-header-row    
          *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row 
-         *matRowDef="let row; columns: displayedColumns;"></tr>
+         *matRowDef="let row ; columns: displayedColumns; "></tr>
       </table>
-      <mat-paginator [length]="100"
+      <!-- <mat-paginator [length]="100"
               [pageSize]="5"
-              [pageSizeOptions]="[5, 10, 25, 100]">
-      </mat-paginator>
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              [showFirstLastButtons]=true></mat-paginator> -->
+      <!-- <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls> -->
+
+      <!-- <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination> -->
+      
+      <div class="d-flex justify-content-between">
+        <div>
+          <span>Page Size: </span>
+          <!-- <form>
+            <mat-form-field>
+              <mat-select placeholder="Clients" [(ngModel)]="selectedValue" name="food" 
+              (change)="changeClient($event)">
+                <mat-option *ngFor="let client of clients" [value]="client.id">
+                  {{client.clientName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form> -->
+          <!-- <mat-form-field>
+            <mat-select placeholder="Clients" [(value)]="pageSize" name="food" 
+            (change)="changeSize($event)">
+              <mat-option *ngFor="let client of sizeList" [value]="client">
+                {{client}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <mat-form-field [style.height.px]=60 appearance="outline">
+              <mat-select [(value)]="pageSize" #ref (selectionChange)="changeSize(ref.value)">
+                <mat-option *ngFor="let size of sizeList" [value]="size" >
+                  {{size}}
+            </mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+        <div></div>
+        <div>
+          <button mat-icon-button matTooltip="Jump to First Page" (click)="first()"color="accent">
+            <mat-icon>first_page</mat-icon>
+          </button>
+          <button matTooltip="Previous Page" [disabled]="curPage==0" mat-icon-button
+           (click)="previous()"color="accent">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <!-- <button (click)="pageJump(page)" style=" border-radius: 50%"
+          [ngStyle]="{'background':tempPage==1?'blue':'none'}" >{{ page+tempPage }} </button>
+            <span style="margin-left: 1.5em;"></span>
+            <button (click)="pageJump(page+1)" style=" border-radius: 50%"
+            [ngStyle]="{'background':tempPage==2?'blue':'none'}" >{{ page+2 }}</button>
+            <span style="margin-left: 1.5em;"></span>
+            <button (click)="pageJump(page+2)" style=" border-radius: 50%"
+            [ngStyle]="{'background':tempPage==0?'blue':'none'}">{{ page+3 }}</button> -->
+
+          <button class="btn btn-outline-primary" *ngFor="let page of pageNumbers" 
+          (click)= "pageJump(page)"style=" border-radius: 50%; margin-left: 0.5em;"
+           [class.active]="page==curPage+1">{{page}}</button>
+          <button matTooltip="Next Page" mat-icon-button [disabled]="curPage==slice-1" (click)="next()"color="accent">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Jump to Last Page" (click)="last()"color="accent">
+            <mat-icon>last_page</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
     <br>
     <div [align]="'end'">

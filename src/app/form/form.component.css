@@ -8,6 +8,10 @@
   mat-toolbar{
     height: 50px;
   }
+  .dataSize{
+    width: 10%;
+    height: 5%;
+  }
   
   /* .mat-form-field {
     font-size: 14px;

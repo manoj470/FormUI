@@ -64,4 +64,16 @@ export class ApiService {
   deleteDocById(id:number){
     return this.http.delete<any>("http://localhost:8080/emp/doc/delete/"+id);
   }
+
+  getDataByPage(page:number,size:number){
+    return this.http.get<any>("http://localhost:8080/emp/"+page+"/"+size);
+  }
+
+  getDatByPageAndCity(page:number,size:number,city:string){
+    return this.http.get<any>("http://localhost:8080/emp/"+page+"/"+size+"/"+city);
+  }
+
+  getEmployeeCount(){
+    return this.http.get<any>("http://localhost:8080/emp/count");
+  }
 }

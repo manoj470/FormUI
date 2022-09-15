@@ -69,4 +69,9 @@ export class LoginComponent implements OnInit {
     // }
   }
 
+  admin(){
+    console.log("redirect to home page...");
+    this.router.navigate([`home`]);
+
+  }
 }
