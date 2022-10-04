@@ -70,19 +70,19 @@ export class UserComponent implements OnInit {
 
   getAllDoc(){
     console.log("Called........ for doc")
-    this.api.getFileById(this.id)
-    .subscribe({
-      next:(res)=>{
-        this.dataSource=new MatTableDataSource(res);
-        console.log("Data")
-        console.log(res);
-      },
-      error:(err)=>{
-        console.log(err);
-        // if(err)
-        alert("Error while getting all data!! "+err);
-      }
-    })
+    // this.api.getFileById(this.id)
+    // .subscribe({
+    //   next:(res)=>{
+    //     this.dataSource=new MatTableDataSource(res.body);
+    //     console.log("Data")
+    //     console.log(res.body);
+    //   },
+    //   error:(err)=>{
+    //     console.log(err);
+    //     // if(err)
+    //     alert("Error while getting all data!! "+err);
+    //   }
+    // })
   }
 
   download(id:number,name:string,type:string){

@@ -37,13 +37,17 @@ export class LoginComponent implements OnInit {
       console.log(this.loginForm.value);
       this.api.postLogin(this.loginForm.value).subscribe({
         next:(res)=>{
-          alert(res.msg);
+          console.log(">>>>>>>>>>>>>>");
+          // console.log(res.headers.get("Set-Cookie"))
+          console.log(res);
+          console.log(">>>>>>>>>>>>>>");
+          alert(res.body.msg);
           this.spinner.hide();
           console.log(this.loginForm.value.email);
-          if(res.msg=='Login Successfully!'){
+          if(res.body.msg=='Login Successfully!'){
             this.emailId=this.loginForm.value.email;
             this.authGuard.isLogin=true;
-            this.router.navigate([`user`],{queryParams:{id:res.id}});
+            this.router.navigate([`user`],{queryParams:{id:res.body.id}});
           }
         },
         error:(err)=>{

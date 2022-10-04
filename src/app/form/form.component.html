@@ -10,10 +10,16 @@
 
 <div class="container">
   <div style="margin-top: 30px;">
-    <mat-form-field appearance="standard">
+    <!-- <mat-form-field appearance="standard">
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="city" #input>
+    </mat-form-field> -->
+
+    <mat-form-field appearance="standard">
+      <mat-label>EMAIL</mat-label>
+      <input matInput type="text" placeholder="email-id" #search>
     </mat-form-field>
+    <button mat-icon-button (click)="onSearch(search.value)">	<mat-icon>search</mat-icon></button>
     
     <div class="mat-elevation-z8" #TABLE>
       <table mat-table [dataSource]="dataSource" matSort>
@@ -99,6 +105,9 @@
          *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row 
          *matRowDef="let row ; columns: displayedColumns; "></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data Matching for "{{search.value}}"</td>
+        </tr>
       </table>
       <!-- <mat-paginator [length]="100"
               [pageSize]="5"
@@ -108,7 +117,7 @@
 
       <!-- <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination> -->
       
-      <div class="d-flex justify-content-between">
+      <div *ngIf="totalRows>4" class="d-flex justify-content-between">
         <div>
           <span>Page Size: </span>
           <!-- <form>
@@ -138,7 +147,7 @@
           </mat-form-field>
         </div>
         <div></div>
-        <div>
+        <div style="margin-top: 1.0em;">
           <button mat-icon-button matTooltip="Jump to First Page" (click)="first()"color="accent">
             <mat-icon>first_page</mat-icon>
           </button>
@@ -146,14 +155,6 @@
            (click)="previous()"color="accent">
             <mat-icon>navigate_before</mat-icon>
           </button>
-          <!-- <button (click)="pageJump(page)" style=" border-radius: 50%"
-          [ngStyle]="{'background':tempPage==1?'blue':'none'}" >{{ page+tempPage }} </button>
-            <span style="margin-left: 1.5em;"></span>
-            <button (click)="pageJump(page+1)" style=" border-radius: 50%"
-            [ngStyle]="{'background':tempPage==2?'blue':'none'}" >{{ page+2 }}</button>
-            <span style="margin-left: 1.5em;"></span>
-            <button (click)="pageJump(page+2)" style=" border-radius: 50%"
-            [ngStyle]="{'background':tempPage==0?'blue':'none'}">{{ page+3 }}</button> -->
 
           <button class="btn btn-outline-primary" *ngFor="let page of pageNumbers" 
           (click)= "pageJump(page)"style=" border-radius: 50%; margin-left: 0.5em;"
@@ -169,7 +170,17 @@
     </div>
     <br>
     <div [align]="'end'">
-      <button mat-raised-button color="primary" (click)="exportAsExcel()">Export as Excel</button>
+      <button [disabled]="apiLoading" mat-raised-button 
+      color="primary" (click)="exportAsExcel()">
+      <div class="spinner-wrapper">
+        <span *ngIf="!apiLoading">Export as Excel</span>
+        <span *ngIf="apiLoading">please wait</span>
+        <mat-spinner *ngIf="apiLoading" color="warn" [diameter]="20"></mat-spinner>
+      </div>
+      </button>
+      <!-- <span>Export as Excel</span><span><mat-spinner diameter="22" color="warn">
+      </mat-spinner></span></button> -->
+      
     </div>
   </div>
 </div>

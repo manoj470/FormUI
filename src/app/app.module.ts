@@ -40,6 +40,7 @@ import { SizePipe } from './pipes/size.pipe';
 import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     // MatProgressSpinnerModule,
     // NgxLoadingButtonsModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -4,9 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DialogComponent } from '../dialog/dialog.component';
 import { ApiService } from '../services/api.service';
-import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-form',
@@ -25,12 +27,14 @@ export class FormComponent implements OnInit {
   incrPage:number=0;
   viewData!:any;
   pageNumbers:number[]=[1,2,3];
-  sizeList:number[]=[5,10,25,50,100]
+  sizeList:number[]=[5,10,25,50,100];
+  apiLoading:boolean=false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private dialog: MatDialog,private api:ApiService,
-    private router:Router){
+    private router:Router,private spinner: NgxSpinnerService,
+    public datepipe: DatePipe){
     
   }
   ngOnInit(): void {
@@ -172,17 +176,37 @@ export class FormComponent implements OnInit {
     this.getAllEmployees();
   }
 
-  @ViewChild('TABLE') table!: ElementRef;
+  // @ViewChild('TABLE') table!: ElementRef;
+  // exportAsExcel(){
+  //   const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
+  //   ws['!cols'] = [];
+  //   ws['!cols'][7] = {hidden:true};
+  //   // delete ws['6'];
+  //   // delete ws[6];
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  //   XLSX.writeFile(wb, 'Employee.xlsx');
+  // }
+
   exportAsExcel(){
-    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
-    ws['!cols'] = [];
-    ws['!cols'][7] = {hidden:true};
-    // delete ws['6'];
-    // delete ws[6];
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Employee.xlsx');
-  }
+    console.log("clicked...");
+    this.apiLoading=true;
+    this.api.getAllExcelFiles().subscribe(res=>{
+      console.log(res);
+      console.log(res.headers)
+      let filename:string=""+res.headers.get('content-disposition')?.split(';')[1].split('=')[1];
+      console.log(">>>>>>>> "+filename);
+      let blob:Blob=res.body as Blob;
+      let a = document.createElement('a');
+      let currentDateTime =this.datepipe.transform((new Date), 'MM/dd/yyyy h:mm:ss');
+      a.download="Employee"+currentDateTime+".csv";
+      a.href=window.URL.createObjectURL(blob);
+      a.click();
+      this.apiLoading=false;
+    })
+  } 
+  
+  
 
   otherData(id:number){
     this.router.navigate([`details`],{queryParams:{id:id}});
@@ -215,6 +239,33 @@ export class FormComponent implements OnInit {
     this.dataSource
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onSearch(query:string){
+    console.log("search data......");
+    console.log(query);
+    if(query === ''){
+      return;
+    }else {
+      this.api.searchByData(query).subscribe({
+        next:(res)=>{
+          console.log(res);
+          if(res == null){
+            console.log(null);
+            this.dataSource=new MatTableDataSource(res);
+            this.totalRows=1;
+          }else{
+            console.log("OK....")
+            this.dataSource=new MatTableDataSource(res);
+            this.totalRows=1;
+          }
+          
+        },
+        error:(err)=>{
+          console.log(err);
+        }
+      })
     }
   }
   

@@ -5,9 +5,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ApiService {
-  // headers = new HttpHeaders({
-  //   mode: 'no-cors'
-  // });
+  headers = new HttpHeaders({
+    mode: 'no-cors'
+  });
   constructor(private http:HttpClient) { }
 
   postData(data:any){
@@ -16,7 +16,8 @@ export class ApiService {
   }
 
   getData(){
-    return this.http.get<any>("http://localhost:8080/emp");
+    return this.http.get<any>("http://localhost:8080/emp",
+    {observe:'response'});
   }
 
   putData(id:number,data:any){
@@ -44,7 +45,8 @@ export class ApiService {
   }
 
   postLogin(data:any){
-    return this.http.post<any>("http://localhost:8080/emp/login/",data);
+    return this.http.post<any>("http://localhost:8080/emp/login",data,
+    {observe:'response'});
   }
 
   postFile(data:any){
@@ -52,7 +54,8 @@ export class ApiService {
   }
 
   getFileById(id:number){
-    return this.http.get<any>("http://localhost:8080/emp/upload/"+id);
+    return this.http.get<any>("http://localhost:8080/emp/upload/"+id,
+    {observe:'response' });
   }
 
   downloadFile(id:number){
@@ -75,5 +78,15 @@ export class ApiService {
 
   getEmployeeCount(){
     return this.http.get<any>("http://localhost:8080/emp/count");
+  }
+
+  getAllExcelFiles(){
+    return this.http.get("http://localhost:8080/emp/export/csv",{
+      observe:'response',responseType: 'blob'
+    });
+  }
+
+  searchByData(data:string){
+    return this.http.get<any>("http://localhost:8080/emp/search/"+data);
   }
 }

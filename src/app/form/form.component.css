@@ -12,6 +12,11 @@
     width: 10%;
     height: 5%;
   }
+  .spinner-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
   /* .mat-form-field {
     font-size: 14px;
